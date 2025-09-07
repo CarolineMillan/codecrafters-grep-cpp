@@ -8,7 +8,8 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
     else if (pattern.length() == 2) {
         std::cout << "|" << pattern << "|" << std::endl;
         std::cout << "|" << std::string("\\d") << "|" << std::endl;
-        if (pattern == std::string("\d")) {
+        if (pattern == std::string("\\d")) {
+            std::cout << "I'm in!" << std::endl;
             bool ans = false;
             for (char ch : input_line) {
                 if (isdigit(ch)) {

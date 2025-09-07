@@ -32,10 +32,10 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
             std::cout << "ch: " << ch << std::endl;
             if (input_line.find(ch) == std::string::npos) {
                 std::cout << "hello" << std::endl;
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
     else if (pattern.front() == '[' && pattern.back() == ']') {
         // positive character group check

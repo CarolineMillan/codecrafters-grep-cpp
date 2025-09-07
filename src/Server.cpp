@@ -5,14 +5,17 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
     if (pattern.length() == 1) {
         return input_line.find(pattern) != std::string::npos;
     }
-    else if (pattern.compare("\\d")) {
-        bool ans = false;
-        for (char ch : input_line) {
-            if (isdigit(ch)) {
-                return 0;
+    else if (pattern.length() == 2) {
+        if (pattern.compare("\\d")) {
+            bool ans = false;
+            for (char ch : input_line) {
+                if (isdigit(ch)) {
+                    return 0;
+                }
             }
+            return 1;
         }
-        return 1;
+        throw std::runtime_error("Unhandled pattern: " + pattern);
     }
     else {
         throw std::runtime_error("Unhandled pattern " + pattern);

@@ -26,7 +26,9 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
     else if (pattern.front() == '[' && pattern[1] == '^' && pattern.back() == ']') {
         // negative character group check
         // check for any char • in pattern=[*] in input_string, return true if we don't find any
-        for (char ch : pattern.substr(2, pattern.length()-3)) {
+        std::string sub = pattern.substr(2, pattern.length()-3);
+        std::cout << "sub: " << sub << std::endl;
+        for (char ch : sub) {
             if (input_line.find(ch) != std::string::npos) {
                 return false;
             }

@@ -6,13 +6,15 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
         return input_line.find(pattern) != std::string::npos;
     }
     else if (pattern.length() == 2) {
-        std::cout << "|" << pattern << "|" << std::endl;
-        std::cout << "|" << std::string("\\d") << "|" << std::endl;
+        // std::cout << "|" << pattern << "|" << std::endl;
+        // std::cout << "|" << std::string("\\d") << "|" << std::endl;
         if (pattern == std::string("\\d")) {
-            std::cout << "I'm in!" << std::endl;
+            //std::cout << "I'm in!" << std::endl;
             bool ans = false;
             for (char ch : input_line) {
+                std::cout << "ch: " << ch << std::endl;
                 if (isdigit(ch)) {
+                    std::cout << "we have a digit" << std::endl;
                     return 0;
                 }
             }

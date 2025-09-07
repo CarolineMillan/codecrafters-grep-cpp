@@ -23,7 +23,18 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
         }
         return false;
     }
+    else if (pattern.front() == '[' && pattern[1] == '^' && pattern.back() == ']') {
+        // negative character group check
+        // check for any char • in pattern=[*] in input_string, return true if we don't find any
+        for (char ch : pattern.substr(2, pattern.length()-3)) {
+            if (input_line.find(ch) != std::string::npos) {
+                return false;
+            }
+        }
+        return true;
+    }
     else if (pattern.front() == '[' && pattern.back() == ']') {
+        // positive character group check
         // check for any char • in pattern=[*] in input_string
         for (char ch : pattern.substr(1, pattern.length()-2)) {
             if (input_line.find(ch) != std::string::npos) {

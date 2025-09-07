@@ -31,6 +31,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
         for (char ch : sub) {
             std::cout << "ch: " << ch << std::endl;
             if (input_line.find(ch) != std::string::npos) {
+                std::cout << "hello" << std::endl;
                 return false;
             }
         }

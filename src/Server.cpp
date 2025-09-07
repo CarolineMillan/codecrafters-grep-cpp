@@ -7,7 +7,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
     }
     else if (pattern.length() == 2) {
         std::cout << pattern << std::endl;
-        if (pattern.compare("\d")) {
+        if (pattern.compare("\\d")) {
             bool ans = false;
             for (char ch : input_line) {
                 if (isdigit(ch)) {

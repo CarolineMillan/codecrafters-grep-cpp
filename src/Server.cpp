@@ -5,13 +5,14 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
     if (pattern.length() == 1) {
         return input_line.find(pattern) != std::string::npos;
     }
-    else if (pattern == "\d") {
+    else if (pattern.compare("\\d")) {
         bool ans = false;
         for (char ch : input_line) {
             if (isdigit(ch)) {
-                
+                return 0;
             }
         }
+        return 1;
     }
     else {
         throw std::runtime_error("Unhandled pattern " + pattern);

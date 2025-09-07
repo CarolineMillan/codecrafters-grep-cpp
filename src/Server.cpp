@@ -23,7 +23,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
         }
         return false;
     }
-    else if ((pattern[0] == '[') && (pattern[pattern.length()] == ']')) {
+    else if (pattern.front() == '[' && pattern.back() == ']') {
         // check for any char • in pattern=[*] in input_string
         for (char ch : pattern.substr(1, pattern.length()-2)) {
             if (input_line.find(ch) != std::string::npos) {

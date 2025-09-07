@@ -5,22 +5,13 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
     if (pattern.length() == 1) {
         return input_line.find(pattern) != std::string::npos;
     }
-    else if (pattern.length() == 2) {
-        // std::cout << "|" << pattern << "|" << std::endl;
-        // std::cout << "|" << std::string("\\d") << "|" << std::endl;
-        if (pattern == std::string("\\d")) {
-            //std::cout << "I'm in!" << std::endl;
-            bool ans = false;
-            for (char ch : input_line) {
-                std::cout << "ch: " << ch << std::endl;
-                if (isdigit(ch)) {
-                    std::cout << "we have a digit" << std::endl;
-                    return true;
-                }
+    else if (pattern == std::string("\\d")) {
+        for (char ch : input_line) {
+            if (isdigit(ch)) {
+                return true;
             }
-            return false;
         }
-        throw std::runtime_error("Unhandled pattern: " + pattern);
+        return false;
     }
     else {
         throw std::runtime_error("Unhandled pattern " + pattern);

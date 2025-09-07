@@ -15,10 +15,10 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
                 std::cout << "ch: " << ch << std::endl;
                 if (isdigit(ch)) {
                     std::cout << "we have a digit" << std::endl;
-                    return 0;
+                    return true;
                 }
             }
-            return 1;
+            return false;
         }
         throw std::runtime_error("Unhandled pattern: " + pattern);
     }

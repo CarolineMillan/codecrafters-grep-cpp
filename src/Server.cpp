@@ -6,12 +6,22 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
         return input_line.find(pattern) != std::string::npos;
     }
     else if (pattern == std::string("\\d")) {
+        // check for a digit
         for (char ch : input_line) {
             if (isdigit(ch)) {
                 return true;
             }
         }
         return false;
+    }
+    else if (pattern == std::string("\\w")) {
+        // check for a 'word', i.e. anything that contains at least one alphanumeric char or an underscore
+        for (char ch : input_line) {
+            if (isalnum(ch) || ch == '_') {
+                return true;
+            }
+        }
+        return false
     }
     else {
         throw std::runtime_error("Unhandled pattern " + pattern);

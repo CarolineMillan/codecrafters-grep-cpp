@@ -6,8 +6,8 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
         return input_line.find(pattern) != std::string::npos;
     }
     else if (pattern.length() == 2) {
-        std::cout << pattern << std::endl;
-        if (pattern.compare("\\d")) {
+        std::cout << "|" << pattern << "|" << std::endl;
+        if (pattern == "\\d") {
             bool ans = false;
             for (char ch : input_line) {
                 if (isdigit(ch)) {

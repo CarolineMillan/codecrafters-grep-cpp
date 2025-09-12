@@ -36,3 +36,22 @@ Note: This section is for stages 2 and beyond.
    `src/Server.cpp`.
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.
+
+# Features
+
+Patterns:
+
+- matches a literal character (e.g. 'a' matches the letter a in the string "1 apple")
+- '\d' matches a digit (e.g. '\d' matches 1 in the string "1 apple")
+- '\w' matches any alphanumeric character, or _ (e.g. matches the string "1 apple", but not the string "$!@%£")
+- '[abc]' matches any string containing the letters abc
+- '[^abc]' matches any string not containing the letters abc
+
+
+
+# Resources used:
+
+- [codecrafters.io](https://app.codecrafters.io/courses/grep/overview)
+- [A Regular Expression Matcher](https://www.cs.princeton.edu/courses/archive/spr09/cos333/beautiful.html) by Brian Kernighan and Rob Pike
+
+

@@ -2,6 +2,9 @@
 #include <string>
 
 bool match_pattern(const std::string& input_line, const std::string& pattern) {
+
+    // need to break up pattern into it's smallest regex components in order so you can match them
+    // or read the article they recommended. It's strcture is like this project, only it uses recursion and an extra helper function
     if (pattern.length() == 1) {
         return input_line.find(pattern) != std::string::npos;
     }
@@ -46,6 +49,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
     else {
         throw std::runtime_error("Unhandled pattern " + pattern);
     }
+
 }
 
 int main(int argc, char* argv[]) {

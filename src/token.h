@@ -12,6 +12,17 @@ struct Token {
     bool negate = false; // differentiates [abc] or [^abc]
     std::array<bool, 256> bitmap; // stores bitmap for character classes, for 256 ascii chars
 
+    bool is_postfix_unary() const {
+        switch (kind) {
+            case KIND::Star:
+            case KIND::Plus:
+            case KIND::Question:
+                return true;
+            default:
+                return false;
+        }
+    };
+
     bool is_operator() const {
         switch (kind) {
             case KIND::Star:
@@ -36,7 +47,7 @@ struct Token {
         }
     };
 
-    static constexpr int get_presedence(KIND kind) {
+    static constexpr int get_precedence(KIND kind) {
         switch (kind) {
             case KIND::Star:
             case KIND::Plus:

@@ -1,27 +1,29 @@
-#include "nfa.h"
-#include "nfa_fragment.h"
+//
+// Created by Caroline Millan on 16/09/2025.
+//
+// parses a regex string into a vector of tokens in postfix form
+
+#include <stack>
+
 #include "parser.h"
 
-NFA::NFA(State* start, State* accept, vector<State> states_vec) {
-    start_state = start;
-    accept_state = accept;
-    states = states_vec;
+using std::stack;
+
+vector<Token> Parser::parse(const string& pattern)
+{
+    tokenize(pattern);
+
+    to_postfix();
+
+    return postfix_tokens;
 }
 
-/*
-void NFA::build_from_regex(const std::string &pattern) {
-    // builds an NFA from a regex pattern string
-    Parser my_parser;
-    vector<Token> tokens = my_parser.parse(pattern);
-    construct();
-};
-*/
 
 /* -------------------- TOKENIZE ---------------------- */
-/*
-void NFA::tokenize(const std::string &pattern) {
+
+void Parser::tokenize(const string &pattern) {
     // tokenizes the pattern string
-    
+
     // make sure we're starting with an empty list of tokens
     tokens.clear();
 
@@ -74,7 +76,7 @@ void NFA::tokenize(const std::string &pattern) {
     }
 };
 
-void NFA::parse_escaped(const char ch) {
+void Parser::parse_escaped(const char ch) {
     // want to match ch to any of the regex things we support, else just save the literal
     Token t;
     switch (ch) {
@@ -99,14 +101,14 @@ void NFA::parse_escaped(const char ch) {
     tokens.push_back(t);
 };
 
-int NFA::parse_char_class(const std::string &pattern, int i) {
+int Parser::parse_char_class(const string &pattern, int i) {
     // create a token for char class [] or [^] starting at pattern[i]
     // two passes -- first one to find the ], second one if you don't find it and need to use a literal instead
     // for now take everything in the character class as a literal character, no escapes or anything
     Token t;
     bool closed = false;
     int original_index = i;
-    
+
     // check for a negative character class
     if (pattern[i] == '^') {
         t.set_neg_char_class();
@@ -136,7 +138,7 @@ int NFA::parse_char_class(const std::string &pattern, int i) {
     return i;
 };
 
-void NFA::add_concats() {
+void Parser::add_concats() {
     // adds concats to tokens
     Token previous;
     bool first = true;
@@ -152,22 +154,22 @@ void NFA::add_concats() {
     }
 };
 
-bool NFA::should_concat(const Token& previous, const Token& current) {
+bool Parser::should_concat(const Token& previous, const Token& current) {
     // may want to check edge cases in future, if you expand it
     return (previous.is_operand() || previous.kind == Token::KIND::RParen || (previous.kind == Token::KIND::Star || previous.kind == Token::KIND::Plus || previous.kind == Token::KIND::Question) )
     && (current.is_operand() || current.kind == Token::KIND::LParen);
 }
-*/
+
 /* --------------------- TO POSTFIX -------------------- */
-/*
-void NFA::to_postfix() {
+
+void Parser::to_postfix() {
     // gets tokens into postfix format using shunting-yard algorithm
 
     //make sure we have a fresh postfix_tokens
     postfix_tokens.clear();
 
     // make a stack to store the operators on
-    std::stack<Token> st;
+    stack<Token> st;
 
     for (const Token& token : concat_tokens) {
         if (token.is_operand() || token.is_postfix_unary()) {
@@ -202,7 +204,7 @@ void NFA::to_postfix() {
         }
         //st.push(token);
     }
-    
+
     // add the remaining tokens from the stack
     while (!st.empty()) {
         Token t = st.top();
@@ -210,19 +212,3 @@ void NFA::to_postfix() {
         if (t.kind != Token::KIND::LParen && t.kind != Token::KIND::RParen) postfix_tokens.push_back(t);
     }
 };
-*/
-/* --------------------- CONSTRUCT --------------------- */
-/*
-void NFA::construct() {
-    // construct the NFA from postfix token list using Thompson's NFA construction algorithm
-
-    std::stack<NFAFragment> st;
-
-    for (const Token& token : postfix_tokens) {
-        // the rules
-        if (token.is_operand()) {
-            // create a new fragment
-        }
-    }
-};
-*/

@@ -34,7 +34,7 @@ NFA Compiler::compile(vector<Token>& tokens) {
                 fragments.push(NFAFragment(start, accept));
 
                 break;
-            }
+        }
         case Token::KIND::CharClass: {
                 // add transition to start state for each char
                 for (int c=0; c<256; c++) {
@@ -47,7 +47,7 @@ NFA Compiler::compile(vector<Token>& tokens) {
                 fragments.push(NFAFragment(start, accept));
 
                 break;
-            }
+        }
         case Token::KIND::Concat: {
                 // our to_postfix means that we're in postfix notation, so the operator comes AFTER both operands
                 // so pop two fragments off the stack for our operands
@@ -69,8 +69,9 @@ NFA Compiler::compile(vector<Token>& tokens) {
                 fragments.push(NFAFragment(a.start, b.accept));
 
                 break;
-            }
+        }
         case Token::KIND::Alt: {
+                // A|B accpets when there is either A or B
                 // TODO should there be an error if stack is empty?
                 if (fragments.empty()) continue;
 
@@ -91,24 +92,88 @@ NFA Compiler::compile(vector<Token>& tokens) {
                 fragments.push(NFAFragment(start, accept));
 
                 break;
-            }
+        }
         case Token::KIND::Star: {
+                // A* accepts when there are 0 or more A's
+                // TODO should there be an error if stack is empty?
+                if (fragments.empty()) continue;
+
+                NFAFragment a = fragments.top();
+                fragments.pop();
+
+                // add epsilon transitions from start to a.start and accept (accepts 0)
+                start->transitions.emplace_back(EPSILON, a.start);
+                start->transitions.emplace_back(EPSILON, accept);
+
+                // add epsilon transitions from a.accept to a.start and accept (accepts 1+)
+                a.accept->transitions.emplace_back(EPSILON, a.start);
+                a.accept->transitions.emplace_back(EPSILON, accept);
+
+                // add fragment to fragments stack
+                fragments.push(NFAFragment(start, accept));
+
                 break;
-            }
+        }
         case Token::KIND::Question: {
+                // A? is equiv to (nothing)|A
+                // TODO should there be an error if stack is empty?
+                if (fragments.empty()) continue;
+
+                NFAFragment a = fragments.top();
+                fragments.pop();
+
+                // add epsilon transitions from start to a.start and accept (accepts 0)
+                start->transitions.emplace_back(EPSILON, a.start);
+                start->transitions.emplace_back(EPSILON, accept);
+
+                // add epsilon transitions from a.accept to accept (accepts 1)
+                a.accept->transitions.emplace_back(EPSILON, accept);
+
+                // add fragment to fragments stack
+                fragments.push(NFAFragment(start, accept));
+
                 break;
-            }
+        }
         case Token::KIND::Plus: {
+                // TODO should there be an error if stack is empty?
+                if (fragments.empty()) continue;
+
+                NFAFragment a = fragments.top();
+                fragments.pop();
+
+                // add epsilon transitions from start to a.start and accept (accepts a.start only)
+                start->transitions.emplace_back(EPSILON, a.start);
+
+                // add epsilon transitions from a.accept to a.start and accept (accepts 1+)
+                a.accept->transitions.emplace_back(EPSILON, a.start);
+                a.accept->transitions.emplace_back(EPSILON, accept);
+
+                // add fragment to fragments stack
+                fragments.push(NFAFragment(start, accept));
+
                 break;
-            }
-            break;
+        }
+        case Token::KIND::Dot: {
+                // wildcard! accept everything
+                // TODO should there be an error if stack is empty?
+                if (fragments.empty()) continue;
+
+                NFAFragment a = fragments.top();
+                fragments.pop();
+
+                // add epsilon transitions from start to accept (accepts anything)
+                start->transitions.emplace_back(EPSILON, accept);
+
+                // add fragment to fragments stack
+                fragments.push(NFAFragment(start, accept));
+
+                break;
+        }
         default: {break;}
         }
-
-
     }
 
     // final fragment on stack will be the start and accept states for the NFA
-    NFAFragment final;
+    NFAFragment final = fragments.top();
     return {final.start, final.accept, states};
 }

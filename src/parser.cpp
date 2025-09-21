@@ -4,10 +4,12 @@
 // parses a regex string into a vector of tokens in postfix form
 
 #include <stack>
+#include <string>
 
 #include "parser.h"
 
 using std::stack;
+using std::string;
 
 vector<Token> Parser::parse(const string& pattern)
 {
@@ -26,6 +28,8 @@ void Parser::tokenize(const string &pattern) {
 
     // make sure we're starting with an empty list of tokens
     tokens.clear();
+
+    // TODO switch statement (maybe)
 
     // loop through the pattern
     for (int i = 0 ; i < pattern.size() ; i++) {
@@ -59,25 +63,57 @@ void Parser::tokenize(const string &pattern) {
                 continue;
             }
             else {
-                int new_i = parse_char_class(pattern, i+1);
-                i = new_i;
+                i = parse_char_class(pattern, i+1);
             }
         }
+        else if (ch == '*') {
+            Token t;
+            t.kind = Token::KIND::Star;
+            tokens.push_back(t);
+        }
+
+        else if (ch == '+') {
+            Token t;
+            t.kind = Token::KIND::Plus;
+            tokens.push_back(t);
+        }
+        else if (ch == '?') {
+            Token t;
+            t.kind = Token::KIND::Question;
+            tokens.push_back(t);
+        }
+        else if (ch == '|') {
+            Token t;
+            t.kind = Token::KIND::Alt;
+            tokens.push_back(t);
+        }
+        else if (ch == '(') {
+            Token t;
+            t.kind = Token::KIND::LParen;
+            tokens.push_back(t);
+        }
+        else if (ch == ')') {
+            Token t;
+            t.kind = Token::KIND::RParen;
+            tokens.push_back(t);
+        }
+        else if (ch == '.') {
+            Token t;
+            t.kind = Token::KIND::Dot;
+            tokens.push_back(t);
+        }
         else {
-            // TODO check for unary operators * + ? |
             Token t;
             t.ch = ch;
             t.kind = Token::KIND::Literal;
             tokens.push_back(t);
         }
-        // check for [abc] and [^abc]
-        // also check for single character tokens (do this last)
-
     }
 };
 
 void Parser::parse_escaped(const char ch) {
     // want to match ch to any of the regex things we support, else just save the literal
+    // TODO add \s for whitespace
     Token t;
     switch (ch) {
         case 'd':

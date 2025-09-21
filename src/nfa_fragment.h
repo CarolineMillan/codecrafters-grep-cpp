@@ -8,4 +8,9 @@
 struct NFAFragment {
     State* start;
     State* accept;
+
+public:
+    NFAFragment(State* start, State* accept);
+    ~NFAFragment()=default;
+    NFAFragment()=default;
 };

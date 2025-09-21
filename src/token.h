@@ -1,5 +1,9 @@
 #pragma once
 
+#include <array>
+
+using std::array;
+
 // Token is a POD-like type (Plain Old Data)
 struct Token {
     // kind of token will be set via an enum for all possible tokens

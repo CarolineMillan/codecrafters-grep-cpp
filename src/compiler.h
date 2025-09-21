@@ -12,5 +12,5 @@ class Compiler {
 public:
     Compiler() = default;
     ~Compiler() = default;
-    NFA compile(vector<Token> tokens);
+    NFA compile(vector<Token>& tokens);
 };

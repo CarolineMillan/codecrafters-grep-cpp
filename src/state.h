@@ -2,6 +2,10 @@
 #include "transition.h"
 
 struct State {
-    int id;
-    Transition* transitions;
+    std::vector<Transition> transitions;
+    bool is_accept;
+public:
+    State(bool accept=false): is_accept(accept) {};
+    State()=default;
+    ~State()=default;
 };

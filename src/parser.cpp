@@ -98,9 +98,7 @@ void Parser::tokenize(const string &pattern) {
             tokens.push_back(t);
         }
         else if (ch == '.') {
-            Token t;
-            t.kind = Token::KIND::Dot;
-            tokens.push_back(t);
+            parse_dot();
         }
         else {
             Token t;
@@ -172,6 +170,16 @@ int Parser::parse_char_class(const string &pattern, int i) {
         }
     }
     return i;
+};
+
+void Parser::parse_dot() {
+    Token t;
+    t.kind = Token::KIND::CharClass;
+    char before_newline = '\n'-1;
+    char after_newline = '\n'+1;
+    t.add_range_to_char_class(0, before_newline);
+    t.add_range_to_char_class(after_newline, -1);
+    tokens.push_back(t);
 };
 
 void Parser::add_concats() {

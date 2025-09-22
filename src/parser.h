@@ -24,6 +24,7 @@ private:
     void tokenize(const string& pattern);
     void parse_escaped(const char ch);
     int parse_char_class(const string& pattern, int i);
+    void parse_dot();
     void add_concats();
     static bool should_concat(const Token& previous, const Token& current);
 

@@ -6,6 +6,7 @@
 #include "nfa_fragment.h"
 
 #include <stack>
+#include <stdexcept>
 
 using std::stack, std::unique_ptr;
 

@@ -94,10 +94,10 @@ int main(int argc, char* argv[]) {
 #include <iostream>
 #include <string>
 
-#include "grape/compiler.h"
-#include "grape/nfa.h"
-#include "grape/parser.h"
-#include "grape/token.h"
+#include "compiler.h"
+#include "nfa.h"
+#include "parser.h"
+#include "token.h"
 
 //throw std::runtime_error("Unhandled pattern " + pattern);
 
